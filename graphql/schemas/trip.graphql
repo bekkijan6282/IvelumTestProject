@@ -1,0 +1,59 @@
+type Trip {
+    id: ID!
+    name: String!
+    start_station_id: ID!
+    end_station_id: ID!
+    start_datetime: String!
+    end_datetime: String!
+    train_id: ID!
+    start_station: Station! @belongsTo
+    end_station: Station! @belongsTo
+    train: Train! @belongsTo
+}
+
+type Station {
+    id: ID!
+    city_id: ID!
+    station_name: String!
+    is_active: Boolean
+}
+
+type TripStation {
+    id: ID!
+    trip_id: ID!
+    station_id: ID!
+}
+
+type PaymentType {
+    id ID!
+    name String!
+}
+
+type TripCarriageDestinationPrice {
+    id: ID!
+    trip_id: ID!
+    carriage_id: ID!
+    start_station_id: ID!
+    end_station_id: ID!
+    price: String!
+    trip: Trip! @belongsTo
+}
+
+extend type Query {
+    stations: [Station!]! @all
+    station(id: ID! @eq): Station @find
+    trips: [Trip!]! @all
+    trip(id: ID! @eq): Trip @find
+    payment_types: [PaymentType!]! @all
+    payment_type(id: ID! @eq): PaymentType @find
+    trip_destination_price: [TripCarriageDestinationPrice!]! @paginate
+}
+
+extend type Mutation {
+    createStation(city_id: ID!, station_name: String!, is_active: Boolean): Station @create
+    updateStation(id: ID!, city_id: ID!, station_name: String!, is_active: Boolean): Station @update
+    createTrip(name: String!, start_station_id: ID!,end_station_id: ID!, start_datetime: String!, end_datetime: String!, train_id: ID!): Trip @create
+    updateTrip(id: ID!, name: String!, start_station_id: ID!,end_station_id: ID!, start_datetime: String!, end_datetime: String!, train_id: ID!): Trip @update
+    createPaymentType(name: String!): PaymentType @create
+    updatePaymentType(id: ID!, name: String!): PaymentType @update
+}

@@ -1,0 +1,29 @@
+type TrainCarriageType {
+    id: ID!
+    name: String!,
+    is_active: Boolean
+}
+
+type TrainCarriage {
+    id: ID!
+    carriage_type_id: String!
+    carriage_id: String!
+    train_type_id: String!
+    train_id: String
+    seats_count: String!
+    is_active: Boolean
+}
+
+extend type Query {
+    train_carriage_types: [TrainCarriageType!]! @all
+    train_carriage_type(id: ID! @eq): TrainCarriageType @find
+    train_carriages: [TrainCarriage!]! @all
+    train_carriage_pagination: [TrainCarriage!]! @paginate
+}
+
+extend type Mutation {
+    createTrainCarriageType(name: String!): TrainCarriageType @create
+    updateTrainCarriageType(id: ID!, name: String!, is_active: Boolean): TrainCarriageType @update
+    createTrainCarriage(carriage_type_id: String!, carriage_id: String!, train_type_id: String!, train_id: String,seats_count: String!,is_active: Boolean): TrainCarriage @create
+    updateTrainCarriage(id: ID!, carriage_type_id: String!, carriage_id: String!, train_type_id: String!, train_id: String,seats_count: String!,is_active: Boolean): TrainCarriage @update
+}

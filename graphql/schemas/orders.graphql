@@ -1,0 +1,52 @@
+type Order {
+    id: ID!
+    trip_id: ID!
+    trip_destination_id: ID!
+    price: String!
+    seat_number: ID!
+    is_valid:Boolean
+    is_paid: Boolean
+    due_datetime: String!
+    trip: Trip! @belongsTo
+    customer: User! @belongsTo
+}
+
+type Invoice {
+    id: ID!
+    order_id: ID!
+    customer_id: ID!
+    payment_type_id: ID!
+    due_datetime: String!
+    is_valid: Boolean
+    order: Order! @belongsTo
+    customer: User! @belongsTo
+}
+
+type Transaction {
+    id: ID!
+    invoice_id: ID!
+    customer_id: ID!
+    payment_type_id: ID!
+    price: String!
+    invoice: Invoice! @belongsTo
+    customer: User! @belongsTo
+    payment_type: PaymentType! @belongsTo
+}
+
+extend type Query {
+    orders: [Order!]! @paginate
+    order(id: ID! @eq): Order! @find
+    invoices: [Invoice!]! @paginate
+    invoice(id: ID! @eq): Invoice! @find
+    transactions: [Transaction!]! @paginate
+    transaction(id: ID! @eq): Transaction! @find
+}
+
+extend type Mutation {
+    createOrder(trip_id: ID!,trip_destination_id: ID!,price: String!,seat_number: ID!,is_valid:Boolean,is_paid: Boolean,due_datetime: String!): Order! @create
+    updateOrder(id: ID!,trip_id: ID!,trip_destination_id: ID!,price: String!,seat_number: ID!,is_valid:Boolean,is_paid: Boolean,due_datetime: String!): Order! @create
+    createInvoice(order_id: ID!,customer_id: ID!,payment_type_id: ID!,due_datetime: String!,is_valid: Boolean): Invoice @create
+    updateInvoice(id: ID!, order_id: ID!,customer_id: ID!,payment_type_id: ID!,due_datetime: String!,is_valid: Boolean): Invoice @update
+    createTransaction(invoice_id: ID!,customer_id: ID!,payment_type_id: ID!,price: String!): Transaction! @create
+    updateTransaction(id: ID!,invoice_id: ID!,customer_id: ID!,payment_type_id: ID!,price: String!): Transaction! @update
+}

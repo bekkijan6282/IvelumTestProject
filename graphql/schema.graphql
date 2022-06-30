@@ -1,0 +1,31 @@
+#import schemas/*.graphql
+
+type User {
+    id: ID!
+    full_name: String!
+    email: String
+    phone_number: String
+    role: Role! @belongsTo
+    email_verified_at: DateTime
+    created_at: DateTime!
+    updated_at: DateTime!
+}
+type Role {
+    id: ID!
+    name: String!
+}
+
+
+type Query {
+    user(id: ID! @eq): User @find
+    users: [User!]! @all
+    paginationUsers: [User!]! @paginate
+    roles: [Role!]! @all
+
+}
+
+type Mutation {
+    createRole(name: String!): Role! @create
+    updateRole(id: ID!, name: String!): Role! @update
+}
+

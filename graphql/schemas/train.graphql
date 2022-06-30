@@ -1,0 +1,28 @@
+type TrainType {
+    id: ID!
+    name: String!
+    is_active: Boolean
+}
+
+type Train {
+    id: ID!
+    train_name: String!
+    train_type_id: String!
+    train_type: TrainType! @belongsTo
+    is_active: Boolean
+}
+
+extend type Query {
+    train_types: [TrainType!]! @all
+    train_type(id: ID! @eq): TrainType @find
+    trains: [Train!]! @all
+    train_pagination: [Train!]! @paginate
+}
+
+extend type Mutation {
+    createTrainType(name: String!): TrainType @create
+    updateTrainType(id: ID!, name: String!, is_active: Boolean): TrainType @update
+    createTrain(train_name: String!,train_type_id: ID!,is_active: Boolean): Train @create
+    updateTrain(id: ID!, train_name: String!, train_type_id: String!,is_active: Boolean): Train @update
+}
+

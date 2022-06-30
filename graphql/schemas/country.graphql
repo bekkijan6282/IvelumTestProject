@@ -1,0 +1,28 @@
+type City {
+    id: ID!
+    name: String!
+    country_id: String!
+    country: Country @belongsTo
+}
+
+type Country {
+    id: ID!
+    name: String!
+    cities: [City!]! @hasMany
+}
+
+extend type Query {
+    countries: [Country!]! @all
+    country(id: ID! @eq): Country @find
+    cities: [City!]! @all
+    city(id: ID! @eq): City @find
+}
+
+extend type Mutation {
+    createCountry(name: String!): Country! @create
+    updateCountry(id: ID!, name: String): Country @update
+    deleteCountry(id: ID!): Country @delete
+    createCity(name: String!, country_id: Integer!): City @create
+    updateCity(id: ID!, name: String!): City @update
+    deleteCity(id: ID!): City @delete
+}
